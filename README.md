@@ -1,2 +1,3 @@
-# NumPy-Pandas-assignment
-AI Accelerator Program: NumPy and Pandas assignments with solutions | Learn data manipulation, analysis, and visualization in Python
+# NumPy and Pandas Assignment
+
+This repository contains assignments for learning NumPy and Pandas libraries in Python for AI Accelarator Program.

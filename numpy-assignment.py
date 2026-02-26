@@ -27,3 +27,38 @@ print(f"Quantities sold daily: {quantities} units")
 print(f"Daily revenue per product: {daily_revenue_per_product} NGN")
 print(f"\nTotal Daily Revenue: {daily_total_revenue} NGN")
 
+#2. Calculate total revenue over 30 days
+days = 30
+total_revenue_over_30_days = daily_total_revenue * days
+
+print(f"\n2. TOTAL REVENUE OVER 30 DAYS:")
+print(f"The total revenue over 30 days is {daily_total_revenue} NGN * {days} days = {total_revenue_over_30_days:,.2f} NGN")
+
+#3. Apply a promotional discount:
+# Create a copy of the daily revenue for each day
+# Shape: (30, 4) - 30 days, 4 products
+daily_revenue_matrix = np.tile(daily_revenue_per_product, (days, 1))
+
+# Create discount matrices
+discount_matrix = np.zeros((days, 4))
+
+# Days 1-5: 15% off all products
+discount_matrix[0:5, :] = 0.15  # 15% discount
+
+# Days 15-20: 10% off Product A and Product B only
+discount_matrix[14:20, [0, 1]] = 0.10  # 10% discount
+
+print(f"\n3. PROMOTIONAL DISCOUNT:")
+print(f"   Days 1-5: 15% off ALL products")
+print(f"   Days 15-20: 10% off Product A and B only")
+print(f"   Other days: No discount")
+
+#Calculate revenue with discounts
+revenue_with_discounts = daily_revenue_matrix * (1-discount_matrix)
+
+#Calculate revenue over 30 days with discounts
+total_revenue_with_discounts = np.sum(revenue_with_discounts)
+
+print(f"\n4. TOTAL REVENUE OVER 30 DAYS (WITH DISCOUNTS):")
+print(f"The total revenue with discount is {total_revenue_with_discounts:,.2f} NGN")
+print()

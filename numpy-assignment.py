@@ -12,8 +12,9 @@ import numpy as np
 prices = np.array([200, 350, 150, 280]) #Price of tomato, rice, pepper, onion
 quantities = np.array([10, 3, 15, 12]) #Daily quantities for each product
 
+print()
 print("="*50)
-print("PRICE & REVENUE CALCULATOR")
+print("ASSIGNMENT 3 [NUMPY]: PRICE & REVENUE CALCULATOR")
 print("="*50)
 
 # 1- Calculate daily revenue (price × quantity for each product)
@@ -21,18 +22,18 @@ daily_revenue_per_product = prices*quantities
 daily_total_revenue = np.sum(daily_revenue_per_product)
 
 print(f"\n1. DAILY REVENUE:")
-print("\nProducts: Tomato, Rice, Pepper, Onion.")
-print(f"Prices: {prices} NGN")
-print(f"Quantities sold daily: {quantities} units")
-print(f"Daily revenue per product: {daily_revenue_per_product} NGN")
-print(f"\nTotal Daily Revenue: {daily_total_revenue} NGN")
+print("\n   Products: Tomato, Rice, Pepper, Onion.")
+print(f"   Prices: {prices} NGN")
+print(f"   Quantities sold daily: {quantities} units")
+print(f"   Daily revenue per product: {daily_revenue_per_product} NGN")
+print(f"\n   Total Daily Revenue: {daily_total_revenue:,.2f} NGN")
 
 #2. Calculate total revenue over 30 days
 days = 30
 total_revenue_over_30_days = daily_total_revenue * days
 
 print(f"\n2. TOTAL REVENUE OVER 30 DAYS:")
-print(f"The total revenue over 30 days is {daily_total_revenue} NGN * {days} days = {total_revenue_over_30_days:,.2f} NGN")
+print(f"   The total revenue over 30 days is {daily_total_revenue} NGN * {days} days = {total_revenue_over_30_days:,.2f} NGN")
 
 #3. Apply a promotional discount:
 # Create a copy of the daily revenue for each day
@@ -60,5 +61,13 @@ revenue_with_discounts = daily_revenue_matrix * (1-discount_matrix)
 total_revenue_with_discounts = np.sum(revenue_with_discounts)
 
 print(f"\n4. TOTAL REVENUE OVER 30 DAYS (WITH DISCOUNTS):")
-print(f"The total revenue with discount is {total_revenue_with_discounts:,.2f} NGN")
+print(f"   The total revenue with discount is {total_revenue_with_discounts:,.2f} NGN")
+
+#5. How much discount did you give away?
+total_discount_given = total_revenue_over_30_days - total_revenue_with_discounts
+discount_percentage = (total_discount_given / total_revenue_over_30_days) * 100
+
+print(f"\n5. DISCOUNT ANALYSIS:")
+print(f"   Total discount given away: {total_discount_given:,.2f} NGN")
+print(f"   Discount as percentage of revenue: {discount_percentage:.2f}%")
 print()

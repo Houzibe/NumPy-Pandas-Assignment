@@ -1,9 +1,4 @@
-import numpy as np 
-#import pandas as pd 
-
-#Load datasets
-#nigerian_market_prices = pd.read_csv('./datasets/nigerian_market_prices_assignment.csv')
-#nigerian_market_prices = pd.read_csv('./datasets/nigerian_market_transaction_assignment.csv')
+import numpy as np
 
 #--------------------------------------------------------------------------------------------
 # Question 3: Price & Revenue Calculation

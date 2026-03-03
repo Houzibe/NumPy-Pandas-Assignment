@@ -1,5 +1,74 @@
 import numpy as np
+import pandas as pd
 
+print("\n"+"*"*50)
+print("ASSIGNMENT 3: NUMPY OPERATIONS ")
+print("*"*50)
+
+#--------------------------------------------------------------------------------------------
+# Question 1: Revenue Simulation
+#--------------------------------------------------------------------------------------------
+
+print("\nQUESTION 1: Revenue Simulation")
+print(""+"-"*50)
+np.random.seed(42)
+
+#product parameters
+products = {
+    "A" : {"mean": 50, "std": 10},
+    "B" : {"mean": 30, "std": 5},
+    "C" : {"mean": 70, "std": 15},
+    "D" : {"mean": 40, "std": 8}
+}
+
+#Generate daily sales for 30 days
+daily_sales = np.zeros((30,4))
+
+for i, (products, params) in enumerate(products.items()):
+    sales = np.random.normal(params["mean"], params["std"],30)
+    sales = np.maximum(0, sales)
+    daily_sales[:, i] = np.round(sales)
+
+#print the shape
+print(f"- Shape of daily_sales array:", daily_sales.shape)
+print("\n")
+print("First 5 days of sales:")
+print("-"*50)
+#Create DataFrame for display
+days = [f"Day {i+1}" for i in range(5)]
+products_list = ["Product A", "Product B", "Product C", "Product D"]
+df_first5 = pd.DataFrame(
+    daily_sales[:5],
+    index=days,
+    columns=products_list
+) 
+print(df_first5.to_string())
+
+#show some basic statistics
+print("\n")
+print("Summary Statistics (30 days):")
+print("-"*50)
+
+df_all = pd.DataFrame(
+    daily_sales,
+    columns=products_list
+)
+
+print("- Mean daily sales:")
+print(df_all.mean().round(1))
+print("\n- Standard deviation:")
+print(df_all.std().round(1))
+print("\n- Minimum sales (any zero days?):")
+print(df_all.min())
+print("\n- Maximum sales:")
+print(df_all.max())
+
+#Check if any days had zero sales
+zero_days = (daily_sales == 0).any(axis=1)
+if zero_days.any():
+    print(f"\nDays with zero sales for some products: {np.where(zero_days)[0] + 1}")
+
+print("\n")
 #--------------------------------------------------------------------------------------------
 # Question 3: Price & Revenue Calculation
 #--------------------------------------------------------------------------------------------

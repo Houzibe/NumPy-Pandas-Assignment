@@ -1,4 +1,136 @@
 import numpy as np
+import pandas as pd
+
+print("\n"+"*"*50)
+print("ASSIGNMENT 3: NUMPY OPERATIONS ")
+print("*"*50)
+
+#--------------------------------------------------------------------------------------------
+# Question 1: Revenue Simulation
+#--------------------------------------------------------------------------------------------
+
+print("\nQUESTION 1: Revenue Simulation")
+print(""+"-"*50)
+np.random.seed(42)
+
+#product parameters
+products = {
+    "A" : {"mean": 50, "std": 10},
+    "B" : {"mean": 30, "std": 5},
+    "C" : {"mean": 70, "std": 15},
+    "D" : {"mean": 40, "std": 8}
+}
+
+#Generate daily sales for 30 days
+daily_sales = np.zeros((30,4))
+
+for i, (products, params) in enumerate(products.items()):
+    sales = np.random.normal(params["mean"], params["std"],30)
+    sales = np.maximum(0, sales)
+    daily_sales[:, i] = np.round(sales)
+
+#print the shape
+print(f"- Shape of daily_sales array:", daily_sales.shape)
+print("\n")
+print("First 5 days of sales:")
+print("-"*50)
+#Create DataFrame for display
+days = [f"Day {i+1}" for i in range(5)]
+products_list = ["Product A", "Product B", "Product C", "Product D"]
+df_first5 = pd.DataFrame(
+    daily_sales[:5],
+    index=days,
+    columns=products_list
+) 
+print(df_first5.to_string())
+
+#show some basic statistics
+print("\n")
+print("Summary Statistics (30 days):")
+print("-"*50)
+
+df_all = pd.DataFrame(
+    daily_sales,
+    columns=products_list
+)
+
+print("- Mean daily sales:")
+print(df_all.mean().round(1))
+print("\n- Standard deviation:")
+print(df_all.std().round(1))
+print("\n- Minimum sales (any zero days?):")
+print(df_all.min())
+print("\n- Maximum sales:")
+print(df_all.max())
+
+#Check if any days had zero sales
+zero_days = (daily_sales == 0).any(axis=1)
+if zero_days.any():
+    print(f"\nDays with zero sales for some products: {np.where(zero_days)[0] + 1}")
+
+print("\n")
+
+#--------------------------------------------------------------------------------------------
+# Question 2: Financial Analysis
+#--------------------------------------------------------------------------------------------
+# Recreate daily_sales from Q1 (if not already in memory)
+product_params = [(50, 10), (30, 5), (70, 15), (40, 8)]  # (mean, std) for A, B, C, D
+daily_sales = np.column_stack([
+    np.clip(np.random.normal(mean, std, 30), 0, None).round().astype(int)
+    for mean, std in product_params
+])
+
+print("=" * 70)
+print("NIGERIAN MARKET STALL - 30-DAY SALES ANALYSIS")
+print("=" * 70)
+
+# 1. Total sales for each product over 30 days
+total_sales_per_product = np.sum(daily_sales, axis=0)
+print("\n1. TOTAL SALES FOR EACH PRODUCT (30 DAYS):")
+print("-" * 40)
+products = ['Product A', 'Product B', 'Product C', 'Product D']
+for i, product in enumerate(products):
+    print(f"   {product}: {total_sales_per_product[i]:,} units")
+print(f"   {'='*25}")
+print(f"   GRAND TOTAL: {np.sum(total_sales_per_product):,} units")
+
+# 2. Average daily sales per product
+avg_daily_sales_per_product = np.mean(daily_sales, axis=0)
+print("\n2. AVERAGE DAILY SALES PER PRODUCT:")
+print("-" * 40)
+for i, product in enumerate(products):
+    print(f"   {product}: {avg_daily_sales_per_product[i]:.2f} units/day")
+
+# 3. The day with maximum total sales (across all products)
+total_sales_per_day = np.sum(daily_sales, axis=1)
+max_sales_day_index = np.argmax(total_sales_per_day)
+max_sales_day = max_sales_day_index + 1  # Convert to 1-based day numbering
+max_sales_amount = np.max(total_sales_per_day)
+print("\n3. DAY WITH MAXIMUM TOTAL SALES:")
+print("-" * 40)
+print(f"   Day {max_sales_day} (Day {max_sales_day_index} in 0-based indexing)")
+print(f"   Total sales: {max_sales_amount} units")
+print(f"   Sales breakdown on that day:")
+for i, product in enumerate(products):
+    print(f"      {product}: {daily_sales[max_sales_day_index, i]} units")
+
+# 4. How many days had total sales above the 30-day average?
+avg_total_sales = np.mean(total_sales_per_day)
+days_above_avg = np.sum(total_sales_per_day > avg_total_sales)
+percentage_above = (days_above_avg / 30) * 100
+print("\n4. DAYS WITH TOTAL SALES ABOVE 30-DAY AVERAGE:")
+print("-" * 40)
+print(f"   30-day average total sales: {avg_total_sales:.2f} units/day")
+print(f"   Days above average: {days_above_avg} out of 30 days")
+print(f"   Percentage: {percentage_above:.1f}%")
+
+# 5. Standard deviation of sales for each product
+std_dev_per_product = np.std(daily_sales, axis=0)
+print("\n5. STANDARD DEVIATION OF SALES FOR EACH PRODUCT:")
+print("-" * 40)
+for i, product in enumerate(products):
+    print(f"   {product}: {std_dev_per_product[i]:.2f} units")
+    print(f"      (Coefficient of variation: {(std_dev_per_product[i]/avg_daily_sales_per_product[i]*100):.1f}%)")
 
 #--------------------------------------------------------------------------------------------
 # Question 3: Price & Revenue Calculation
